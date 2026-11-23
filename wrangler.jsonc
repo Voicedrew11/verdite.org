@@ -1,6 +1,10 @@
 {
   "name": "verdite-org",
   "compatibility_date": "2026-11-23",
+  "routes": [
+    { "pattern": "verdite.org", "custom_domain": true },
+    { "pattern": "www.verdite.org", "custom_domain": true }
+  ],
   "assets": {
     "directory": "public",
     "not_found_handling": "404-page"
