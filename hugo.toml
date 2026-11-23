@@ -1,0 +1,35 @@
+baseURL = 'https://verdite.org/'
+locale = 'en-us'
+title = 'Verdite'
+disableKinds = ['taxonomy', 'term', 'rss', 'sitemap']
+
+[params]
+description = 'Native ports of the King’s Field games, with downloads, mods, a wiki and an archive.'
+github = 'https://github.com/Voicedrew11'
+discord = 'https://discord.gg/R4EKCs8RWH'
+wiki = 'https://wiki.verdite.org'
+
+[[menus.main]]
+name = 'Downloads'
+pageRef = '/downloads'
+weight = 10
+
+[[menus.main]]
+name = 'Mods'
+pageRef = '/mods'
+weight = 20
+
+[[menus.main]]
+name = 'Wiki'
+url = 'https://wiki.verdite.org'
+weight = 30
+
+[[menus.main]]
+name = 'Guides'
+pageRef = '/guides'
+weight = 40
+
+[[menus.main]]
+name = 'Archive'
+pageRef = '/archive'
+weight = 50

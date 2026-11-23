@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="{{ site.Language.Locale }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} · {{ site.Title }}{{ end }}</title>
+<meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ site.Params.description }}{{ end }}">
+<meta name="color-scheme" content="dark light">
+{{ with resources.Get "css/site.css" | minify | fingerprint -}}
+<link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}">
+{{- end }}
+</head>
+<body>
+<header>
+  <a class="wordmark" href="{{ "/" | relURL }}">Verdite</a>
+  <nav>
+    {{- range site.Menus.main }}
+    <a href="{{ .URL }}"{{ if $.IsMenuCurrent "main" . }} aria-current="page"{{ end }}>{{ .Name }}</a>
+    {{- end }}
+  </nav>
+</header>
+<main>
+{{ block "main" . }}{{ end }}
+</main>
+<footer>
+  <a href="{{ site.Params.github }}">GitHub</a>
+  <a href="{{ site.Params.discord }}">Discord</a>
+  <span>Not affiliated with FromSoftware. Bring your own disc.</span>
+</footer>
+</body>
+</html>

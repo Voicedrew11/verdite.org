@@ -1,0 +1,15 @@
+{{ define "main" }}
+<h1>{{ .Title }}</h1>
+{{ .Content }}
+{{- range hugo.Data.games.game }}
+<section class="game" id="{{ .name | urlize }}" data-repo="{{ .repo }}">
+  <h2>{{ .name }} <span class="release muted"></span></h2>
+  <p>{{ .game }}, {{ .edition }}. Needs your own disc image of <code>{{ .needs }}</code>.</p>
+  <ul class="assets"></ul>
+  <p class="small"><a href="https://github.com/{{ .repo }}/releases/latest">Latest release on GitHub</a> · <a href="https://github.com/{{ .repo }}">Source</a></p>
+</section>
+{{- end }}
+{{ with resources.Get "js/downloads.js" | minify | fingerprint -}}
+<script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" defer></script>
+{{- end }}
+{{ end }}

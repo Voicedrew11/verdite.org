@@ -1,0 +1,8 @@
+{{ define "main" }}
+{{ .Content }}
+<ul class="games">
+  {{- range hugo.Data.games.game }}
+  <li><a href="{{ "/downloads" | relURL }}#{{ .name | urlize }}">{{ .name }}</a>: {{ .game }} <span class="muted">({{ .edition }})</span></li>
+  {{- end }}
+</ul>
+{{ end }}
