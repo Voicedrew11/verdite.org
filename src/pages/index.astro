@@ -1,6 +1,8 @@
 ---
 import Base from "../layouts/Base.astro";
 import Intro from "../components/Intro.astro";
+import PlatformIcons from "../components/PlatformIcons.astro";
+import DownloadIcon from "../components/DownloadIcon.astro";
 import { site } from "../data/site";
 import { games, gameAnchor } from "../data/games";
 
@@ -19,20 +21,20 @@ const features = [
   <section class="hero">
     <div class="container hero-inner">
       <div class="hero-text">
-        <p class="eyebrow">King’s Field · PlayStation &amp; PlayStation 2</p>
-        <h1>King’s Field, native on your&nbsp;computer.</h1>
+        <h1>Classic games on modern&nbsp;hardware</h1>
         <p class="lede">
-          Verdite is a set of native ports of FromSoftware’s King’s Field games, built
-          from decompilations of the original releases. Bring your own disc.
+          Verdite makes native ports of older games for Windows, Mac, Linux and Android,
+          starting with FromSoftware’s King’s Field series. Each port is rebuilt from the
+          original release. The game itself isn’t included, so you need your own copy.
         </p>
         <div class="actions">
           <a class="btn btn-primary" href="/downloads/">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11" /><path d="M7 10l5 5 5-5" /><path d="M5 20h14" /></svg>
+            <DownloadIcon />
             Download
           </a>
           <a class="btn btn-ghost" href={site.wiki}>Read the wiki</a>
         </div>
-        <p class="platforms">Windows · macOS · Linux · Android · iOS</p>
+        <PlatformIcons />
       </div>
       <div class="hero-art" aria-hidden="true">
         <canvas class="hero-gem"></canvas>

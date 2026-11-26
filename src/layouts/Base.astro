@@ -3,6 +3,7 @@ import "@fontsource-variable/inter";
 import "@fontsource-variable/saira/wdth.css";
 import "../styles/site.css";
 import { Image } from "astro:assets";
+import DownloadIcon from "../components/DownloadIcon.astro";
 import logo from "../assets/verdite-project.webp";
 import { site, tabs, type Tab } from "../data/site";
 
@@ -11,7 +12,7 @@ interface Props {
   description?: string;
 }
 const { title, description = site.description } = Astro.props;
-const pageTitle = title ? `${title} · Verdite Project` : "Verdite Project · King’s Field, native on your computer";
+const pageTitle = title ? `${title} · Verdite Project` : "Verdite Project";
 
 const path = Astro.url.pathname;
 function isCurrent(tab: Tab): boolean {
@@ -29,7 +30,9 @@ const year = new Date().getFullYear();
 <meta name="description" content={description} />
 <meta name="color-scheme" content="dark" />
 <meta name="theme-color" content="#07090a" />
-<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+<link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 </head>
 <body>
 <slot name="before-page" />
@@ -39,11 +42,11 @@ const year = new Date().getFullYear();
       <Image src={logo} alt="Verdite Project" widths={[180, 360]} sizes="9rem" loading="eager" />
     </a>
     <nav class="nav-links" aria-label="Main">
-      {tabs.filter((tab) => tab.href !== "/").map((tab) => (
+      {tabs.filter((tab) => tab.inNav).map((tab) => (
         <a href={tab.href} aria-current={isCurrent(tab) ? "page" : undefined}>{tab.name}</a>
       ))}
     </nav>
-    <a class="btn btn-primary btn-small nav-cta" href="/downloads/">Download</a>
+    <a class="btn btn-primary btn-small nav-cta" href="/downloads/" aria-current={path.startsWith("/downloads") ? "page" : undefined}><DownloadIcon size={16} />Download</a>
   </div>
 </header>
 <main>

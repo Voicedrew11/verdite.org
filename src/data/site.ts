@@ -3,7 +3,7 @@
 export const site = {
   title: "Verdite",
   description:
-    "Native ports of the King’s Field games, with downloads, mods, a wiki and an archive.",
+    "Native ports of classic games, starting with King’s Field, with downloads, mods, a wiki and an archive.",
   github: "https://github.com/Voicedrew11",
   discord: "https://discord.gg/R4EKCs8RWH",
   wiki: "https://wiki.verdite.org",
@@ -12,14 +12,16 @@ export const site = {
 export interface Tab {
   name: string;
   href: string;
+  /** Shown as a link in the nav bar. Home is the logo; Downloads is the green button. */
+  inNav: boolean;
 }
 
-// The tabs, in order. A tab is current when the page path starts with its href.
+// The site's pages, in order. A tab is current when the page path starts with its href.
 export const tabs: Tab[] = [
-  { name: "Home", href: "/" },
-  { name: "Downloads", href: "/downloads/" },
-  { name: "Mods", href: "/mods/" },
-  { name: "Wiki", href: site.wiki },
-  { name: "Guides", href: "/guides/" },
-  { name: "Archive", href: "/archive/" },
+  { name: "Home", href: "/", inNav: false },
+  { name: "Downloads", href: "/downloads/", inNav: false },
+  { name: "Mods", href: "/mods/", inNav: true },
+  { name: "Wiki", href: site.wiki, inNav: true },
+  { name: "Guides", href: "/guides/", inNav: true },
+  { name: "Archive", href: "/archive/", inNav: true },
 ];

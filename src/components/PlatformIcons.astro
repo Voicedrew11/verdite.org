@@ -1,0 +1,51 @@
+---
+// A row of platform logos. Each logo is labelled for screen readers and shows
+// its name on hover. Apple's logo stands for both macOS and iOS.
+// Logos come from Simple Icons (CC0) at build time; nothing loads in the browser.
+import { siAndroid, siApple, siLinux } from "simple-icons";
+
+interface Platform {
+  name: string;
+  path: string;
+}
+
+// Simple Icons has no Windows logo; this is the four-pane mark on a 24px grid.
+const WINDOWS_PATH = "M0 0h11.4v11.4H0zM12.6 0H24v11.4H12.6zM0 12.6h11.4V24H0zM12.6 12.6H24V24H12.6z";
+
+const platforms: Platform[] = [
+  { name: "Windows", path: WINDOWS_PATH },
+  { name: "macOS and iOS", path: siApple.path },
+  { name: "Linux", path: siLinux.path },
+  { name: "Android", path: siAndroid.path },
+];
+---
+<ul class="platform-icons" aria-label="Runs on">
+  {platforms.map((p) => (
+    <li title={p.name}>
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d={p.path} /></svg>
+      <span class="visually-hidden">{p.name}</span>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .platform-icons {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--faint);
+  }
+  .platform-icons li { display: flex; transition: color 0.15s; }
+  .platform-icons li:hover { color: var(--muted); }
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+</style>
