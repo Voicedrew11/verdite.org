@@ -297,7 +297,7 @@ code {
 .port-link { display: flex; flex-direction: column; gap: 0.35rem; color: var(--text); text-decoration: none; }
 .port-link:hover { color: var(--text); }
 .port-link:hover .port-name { color: var(--accent); }
-.port-icon { width: 56px; height: 56px; margin-bottom: 0.75rem; border-radius: var(--radius-small); }
+.port-icon { width: 64px; height: 64px; margin-bottom: 0.75rem; border-radius: var(--radius-small); }
 .port-needs { margin-top: 0.4rem; color: var(--faint); font-size: 0.8rem; }
 
 .port-stats {
@@ -609,7 +609,6 @@ code {
   height: var(--size);
   opacity: 0.13;
   transform: rotate(var(--tilt));
-  image-rendering: pixelated;
   animation: icon-drop-in 1.1s cubic-bezier(0.3, 1.25, 0.5, 1) var(--delay) both;
 }
 /* Each icon drops from above the screen, overshoots a little and settles. */

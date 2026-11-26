@@ -18,6 +18,10 @@ export interface Game {
   needs: string;
   /** The port's app icon, square. */
   icon: ImageMetadata;
+  /** "pixel" art gets hard pixel edges when shown at iconPixels or larger. */
+  iconArt: "pixel" | "painted";
+  /** The art's own resolution (a 64-pixel sprite scaled up to 256 is 64). */
+  iconPixels: number;
   /** Names src/styles/themes/<theme>.css, which restyles the port's own page. */
   theme?: string;
   /** One or two sentences for the port's own page. */
@@ -28,7 +32,10 @@ export const games: Game[] = [
   {
     name: "Verdite1",
     repo: "Voicedrew11/verdite1",
+    theme: "verdite1",
     icon: verdite1Icon,
+    iconArt: "pixel",
+    iconPixels: 64,
     game: "King’s Field",
     edition: "Japan, PlayStation",
     needs: "SLPS-00017",
@@ -39,6 +46,8 @@ export const games: Game[] = [
     repo: "Voicedrew11/verdite2",
     theme: "verdite2",
     icon: verdite2Icon,
+    iconArt: "pixel",
+    iconPixels: 64,
     game: "King’s Field",
     edition: "North America, PlayStation; King’s Field II in Japan",
     needs: "SLUS-00158",
@@ -47,7 +56,10 @@ export const games: Game[] = [
   {
     name: "Verdite3",
     repo: "Voicedrew11/verdite3",
+    theme: "verdite3",
     icon: verdite3Icon,
+    iconArt: "pixel",
+    iconPixels: 64,
     game: "King’s Field II",
     edition: "North America, PlayStation; King’s Field III in Japan",
     needs: "SLUS-00255",
@@ -57,6 +69,8 @@ export const games: Game[] = [
     name: "Holyland",
     repo: "Voicedrew11/holyland",
     icon: holylandIcon,
+    iconArt: "painted",
+    iconPixels: 256,
     game: "King’s Field: The Ancient City",
     edition: "North America, PlayStation 2",
     needs: "SLUS-20318",

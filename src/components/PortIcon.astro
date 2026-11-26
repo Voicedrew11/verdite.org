@@ -1,0 +1,25 @@
+---
+// A port's icon, served as the original file: no resizing or re-encoding,
+// which smears pixel art. Pixel-art icons are drawn with hard pixel edges
+// when shown at their native size or larger; smaller, they are smoothed,
+// which reads better than dropped pixels.
+import type { HTMLAttributes } from "astro/types";
+import type { Game } from "../data/games";
+
+interface Props extends HTMLAttributes<"img"> {
+  game: Game;
+  size_px: number;
+}
+const { game, size_px, style, ...rest } = Astro.props;
+const crisp = game.iconArt === "pixel" && size_px >= game.iconPixels;
+const rendering = crisp ? "image-rendering:pixelated;" : "";
+---
+<img
+  src={game.icon.src}
+  width={size_px}
+  height={size_px}
+  alt=""
+  decoding="async"
+  style={`${rendering}${style ?? ""}`}
+  {...rest}
+/>

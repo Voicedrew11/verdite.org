@@ -4,6 +4,7 @@
 // themselves, who we are, and what we never ship.
 import { Image } from "astro:assets";
 import Base from "../layouts/Base.astro";
+import PortIcon from "../components/PortIcon.astro";
 import Intro from "../components/Intro.astro";
 import PlatformIcons from "../components/PlatformIcons.astro";
 import DownloadIcon from "../components/DownloadIcon.astro";
@@ -55,7 +56,7 @@ const values = [
         </div>
         <ul class="chip-row" aria-label="The ports">
           {games.map((game) => (
-            <li><a class="chip" href={gamePath(game)}><Image class="chip-icon" src={game.icon} alt="" widths={[20, 40]} sizes="20px" />{game.name}</a></li>
+            <li><a class="chip" href={gamePath(game)}><PortIcon class="chip-icon" game={game} size_px={20} />{game.name}</a></li>
           ))}
         </ul>
         <PlatformIcons />

@@ -1,0 +1,19 @@
+/* Verdite1: the site's colours swapped for the skeleton icon's bone gold,
+   with its icons dropping in behind the page. Applies only to
+   body[data-theme="verdite1"]. */
+
+body[data-theme="verdite1"] {
+  --bg: #0a0905;
+  --surface: #131109;
+  --surface-2: #1a170d;
+  --line: rgba(230, 189, 91, 0.12);
+  --line-strong: rgba(230, 189, 91, 0.24);
+  --accent: #e6bd5b;
+  --accent-strong: #ffd562;
+  --accent-ink: #1a1102;
+  --accent-glow: rgba(230, 189, 91, 0.2);
+}
+
+body[data-theme="verdite1"] .nav { background: rgba(12, 10, 5, 0.75); }
+
+body[data-theme="verdite1"] .game-ambience { display: block; }

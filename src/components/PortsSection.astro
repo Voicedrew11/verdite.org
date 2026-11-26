@@ -3,8 +3,8 @@
 // stars, downloads, latest version and a button for the visitor's system.
 // Used on the home and downloads pages. Cards render complete without
 // JavaScript or GitHub; the live numbers fill in when GitHub answers.
-import { Image } from "astro:assets";
 import DownloadIcon from "./DownloadIcon.astro";
+import PortIcon from "./PortIcon.astro";
 import GitHubSnapshot from "./GitHubSnapshot.astro";
 import { games, gamePath } from "../data/games";
 import { site } from "../data/site";
@@ -28,7 +28,7 @@ import { site } from "../data/site";
       {games.map((game) => (
         <li class="port-card" data-repo={game.repo}>
           <a class="port-link" href={gamePath(game)}>
-            <Image class="port-icon" src={game.icon} alt="" widths={[56, 112]} sizes="56px" />
+            <PortIcon class="port-icon" game={game} size_px={64} />
             <span class="port-name">{game.name}</span>
             <span class="port-game">{game.game}</span>
             <span class="port-edition">{game.edition}</span>

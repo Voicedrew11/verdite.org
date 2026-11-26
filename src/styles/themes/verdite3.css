@@ -1,0 +1,19 @@
+/* Verdite3: the site's colours swapped for the knight icon's moss-green
+   hair, with its icons dropping in behind the page. Applies only to
+   body[data-theme="verdite3"]. */
+
+body[data-theme="verdite3"] {
+  --bg: #080a06;
+  --surface: #10140c;
+  --surface-2: #161b10;
+  --line: rgba(160, 196, 104, 0.12);
+  --line-strong: rgba(160, 196, 104, 0.24);
+  --accent: #a0c468;
+  --accent-strong: #c0e08a;
+  --accent-ink: #0e1604;
+  --accent-glow: rgba(160, 196, 104, 0.2);
+}
+
+body[data-theme="verdite3"] .nav { background: rgba(9, 11, 7, 0.75); }
+
+body[data-theme="verdite3"] .game-ambience { display: block; }
