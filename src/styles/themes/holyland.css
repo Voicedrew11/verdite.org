@@ -1,0 +1,25 @@
+/* Holyland: the site's colours swapped for the ember glow behind the icon's
+   Idol of Sorrow, with the idol itself scattered behind the page.
+   Applies only to body[data-theme="holyland"]. */
+
+body[data-theme="holyland"] {
+  --bg: #0b0806;
+  --surface: #15100c;
+  --surface-2: #1c1510;
+  --line: rgba(233, 148, 74, 0.12);
+  --line-strong: rgba(233, 148, 74, 0.24);
+  --accent: #e9944a;
+  --accent-strong: #ffb36b;
+  --accent-ink: #1c0d02;
+  --accent-glow: rgba(233, 148, 74, 0.2);
+}
+
+body[data-theme="holyland"] .nav { background: rgba(13, 9, 7, 0.75); }
+
+body[data-theme="holyland"] .game-ambience { display: block; }
+/* The idol is dark stone on a dark page, so it gets the ember rim light
+   it has in the icon, and a little more presence than the pixel icons. */
+body[data-theme="holyland"] .game-ambience img {
+  --rest-opacity: 0.3;
+  filter: brightness(1.5) drop-shadow(0 0 5px rgba(233, 148, 74, 0.65));
+}

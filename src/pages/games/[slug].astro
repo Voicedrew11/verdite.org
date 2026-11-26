@@ -40,6 +40,9 @@ const random = seededRandom(game.name);
 // One icon per cell of a 4 x 4 grid over the screen, nudged randomly within
 // its cell, so they cover the screen evenly without looking lined up.
 const GRID = 4;
+// Icons tilt a little; a backdrop object is turned any way and mirrored.
+const TILT_MAX_DEG = game.backdrop ? 180 : 25;
+const SIZE_MIN_PX = game.backdrop ? 44 : 28;
 const CELL_PCT = 100 / GRID;
 const falling = Array.from({ length: GRID * GRID }, (_, i) => {
   const col = i % GRID;
@@ -49,15 +52,18 @@ const falling = Array.from({ length: GRID * GRID }, (_, i) => {
     left_pct: Math.round(col * CELL_PCT + CELL_PCT / 2 + jitter() - 2),
     rest_pct: Math.round(row * CELL_PCT + CELL_PCT / 2 + jitter() - 3),
     delay_ms: Math.round(random() * 900),
-    size_px: 28 + Math.round(random() * 30),
-    tilt_deg: Math.round(random() * 50) - 25,
+    size_px: SIZE_MIN_PX + Math.round(random() * 30),
+    tilt_deg: Math.round((random() * 2 - 1) * TILT_MAX_DEG),
+    mirror: game.backdrop && random() < 0.5 ? -1 : 1,
   };
 });
 ---
 <Base title={game.name} description={`${game.summary} Download the latest release.`} theme={game.theme}>
   <div class="game-ambience" aria-hidden="true">
     {falling.map((f) => (
-      <PortIcon game={game} size_px={f.size_px} style={`--x:${f.left_pct}%;--y:${f.rest_pct}%;--delay:${f.delay_ms}ms;--size:${f.size_px}px;--tilt:${f.tilt_deg}deg`} />
+      game.backdrop
+        ? <img src={game.backdrop.src} alt="" decoding="async" style={`--x:${f.left_pct}%;--y:${f.rest_pct}%;--delay:${f.delay_ms}ms;--size:${f.size_px}px;--tilt:${f.tilt_deg}deg;--mirror:${f.mirror}`} />
+        : <PortIcon game={game} size_px={f.size_px} style={`--x:${f.left_pct}%;--y:${f.rest_pct}%;--delay:${f.delay_ms}ms;--size:${f.size_px}px;--tilt:${f.tilt_deg}deg`} />
     ))}
   </div>
   <section class="game-hero">

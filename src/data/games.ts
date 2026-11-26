@@ -9,6 +9,7 @@ import verdite1Icon from "../assets/ports/verdite1.png";
 import verdite2Icon from "../assets/ports/verdite2.png";
 import verdite3Icon from "../assets/ports/verdite3.png";
 import holylandIcon from "../assets/ports/holyland.png";
+import holylandIdol from "../assets/ports/holyland-idol.png";
 
 export interface Game {
   name: string;
@@ -22,6 +23,9 @@ export interface Game {
   iconArt: "pixel" | "painted";
   /** The art's own resolution (a 64-pixel sprite scaled up to 256 is 64). */
   iconPixels: number;
+  /** Scattered behind a themed port's page in place of the icon, turned and
+      mirrored freely; for icons that carry their own background. */
+  backdrop?: ImageMetadata;
   /** Names src/styles/themes/<theme>.css, which restyles the port's own page. */
   theme?: string;
   /** One or two sentences for the port's own page. */
@@ -71,6 +75,9 @@ export const games: Game[] = [
     icon: holylandIcon,
     iconArt: "painted",
     iconPixels: 256,
+    // The Idol of Sorrow, cut out of the icon's glowing background.
+    backdrop: holylandIdol,
+    theme: "holyland",
     game: "King’s Field: The Ancient City",
     edition: "North America, PlayStation 2",
     needs: "SLUS-20318",

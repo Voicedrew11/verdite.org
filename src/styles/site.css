@@ -213,7 +213,7 @@ code {
   inset: -20% -10% auto auto;
   width: 60rem;
   height: 60rem;
-  background: radial-gradient(closest-side, rgba(110, 235, 140, 0.11), transparent);
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--accent) 11%, transparent), transparent);
   pointer-events: none;
 }
 
@@ -277,9 +277,9 @@ code {
 }
 .port-card:hover, .port-card:focus-within {
   color: var(--text);
-  border-color: rgba(142, 240, 168, 0.45);
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
   transform: translateY(-3px);
-  box-shadow: 0 18px 40px -20px rgba(110, 235, 140, 0.35);
+  box-shadow: 0 18px 40px -20px color-mix(in srgb, var(--accent) 35%, transparent);
 }
 
 .port-name { font: 600 1.9rem/1 var(--display); font-stretch: 80%; }
@@ -385,8 +385,8 @@ code {
 
 .pill.pill-accent {
   align-self: flex-start;
-  border-color: rgba(142, 240, 168, 0.35);
-  background: rgba(142, 240, 168, 0.06);
+  border-color: color-mix(in srgb, var(--accent) 35%, transparent);
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
   color: var(--accent);
   font-family: var(--sans);
   font-weight: 600;
@@ -419,7 +419,7 @@ code {
   text-decoration: none;
   transition: border-color 0.15s;
 }
-.step:hover { color: var(--text); border-color: rgba(142, 240, 168, 0.45); }
+.step:hover { color: var(--text); border-color: color-mix(in srgb, var(--accent) 45%, transparent); }
 .step-number { flex: none; font: 600 1.4rem/1.1 var(--display); color: var(--accent); }
 .step-body { display: flex; flex-direction: column; gap: 0.25rem; }
 .step-title { font-weight: 600; }
@@ -454,7 +454,7 @@ code {
   border: 1px solid var(--line);
   border-radius: calc(var(--radius) + 6px);
   background:
-    radial-gradient(80% 140% at 100% 0%, rgba(110, 235, 140, 0.12), transparent 60%),
+    radial-gradient(80% 140% at 100% 0%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 60%),
     var(--surface);
 }
 .community h2 { margin-bottom: 0.5rem; }
@@ -513,7 +513,7 @@ code {
   border-radius: var(--radius);
   background: linear-gradient(180deg, var(--surface-2), var(--surface));
 }
-.download:target { border-color: rgba(142, 240, 168, 0.5); }
+.download:target { border-color: color-mix(in srgb, var(--accent) 50%, transparent); }
 
 .download-head {
   display: flex;
@@ -574,7 +574,7 @@ code {
   text-decoration: none;
   transition: border-color 0.15s, background-color 0.15s;
 }
-.file:hover { color: var(--text); border-color: var(--accent); background: rgba(142, 240, 168, 0.05); }
+.file:hover { color: var(--text); border-color: var(--accent); background: color-mix(in srgb, var(--accent) 5%, transparent); }
 .file .file-size { flex: none; color: var(--faint); font: 400 0.78rem var(--mono); white-space: nowrap; }
 
 .download-links { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; font-size: 0.875rem; }
@@ -607,14 +607,15 @@ code {
   left: var(--x);
   width: var(--size);
   height: var(--size);
-  opacity: 0.13;
-  transform: rotate(var(--tilt));
+  object-fit: contain;
+  opacity: var(--rest-opacity, 0.13);
+  transform: rotate(var(--tilt)) scaleX(var(--mirror, 1));
   animation: icon-drop-in 1.1s cubic-bezier(0.3, 1.25, 0.5, 1) var(--delay) both;
 }
 /* Each icon drops from above the screen, overshoots a little and settles. */
 @keyframes icon-drop-in {
-  from { transform: translateY(-110vh) rotate(calc(var(--tilt) * -2)); opacity: 0; }
-  to { transform: translateY(0) rotate(var(--tilt)); opacity: 0.13; }
+  from { transform: translateY(-110vh) rotate(calc(var(--tilt) * -2)) scaleX(var(--mirror, 1)); opacity: 0; }
+  to { transform: translateY(0) rotate(var(--tilt)) scaleX(var(--mirror, 1)); opacity: var(--rest-opacity, 0.13); }
 }
 @media (prefers-reduced-motion: reduce) {
   .game-ambience img { animation: none; }
