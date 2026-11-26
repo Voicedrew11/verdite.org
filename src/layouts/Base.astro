@@ -10,8 +10,10 @@ import { site, tabs, type Tab } from "../data/site";
 interface Props {
   title?: string;
   description?: string;
+  /** A port's theme name (src/styles/themes/<theme>.css), set on <body>. */
+  theme?: string;
 }
-const { title, description = site.description } = Astro.props;
+const { title, description = site.description, theme } = Astro.props;
 const pageTitle = title ? `${title} · Verdite Project` : "Verdite Project";
 
 const path = Astro.url.pathname;
@@ -34,7 +36,7 @@ const year = new Date().getFullYear();
 <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 </head>
-<body>
+<body data-theme={theme}>
 <slot name="before-page" />
 <header class="nav">
   <div class="nav-inner">

@@ -1,0 +1,19 @@
+/* Verdite2: the site's colours swapped for the kraken icon's sea teal,
+   with its icons falling behind the page. Applies only to
+   body[data-theme="verdite2"]. */
+
+body[data-theme="verdite2"] {
+  --bg: #050a0b;
+  --surface: #091413;
+  --surface-2: #0d1c1b;
+  --line: rgba(110, 200, 185, 0.12);
+  --line-strong: rgba(110, 200, 185, 0.24);
+  --accent: #5fcab8;
+  --accent-strong: #93e6d6;
+  --accent-ink: #021412;
+  --accent-glow: rgba(95, 202, 184, 0.2);
+}
+
+body[data-theme="verdite2"] .nav { background: rgba(5, 12, 12, 0.75); }
+
+body[data-theme="verdite2"] .game-ambience { display: block; }

@@ -18,6 +18,8 @@ export interface Game {
   needs: string;
   /** The port's app icon, square. */
   icon: ImageMetadata;
+  /** Names src/styles/themes/<theme>.css, which restyles the port's own page. */
+  theme?: string;
   /** One or two sentences for the port's own page. */
   summary: string;
 }
@@ -35,6 +37,7 @@ export const games: Game[] = [
   {
     name: "Verdite2",
     repo: "Voicedrew11/verdite2",
+    theme: "verdite2",
     icon: verdite2Icon,
     game: "King’s Field",
     edition: "North America, PlayStation; King’s Field II in Japan",

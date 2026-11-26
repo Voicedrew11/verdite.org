@@ -581,12 +581,54 @@ code {
 
 /* A port's own page */
 
-.game-title { display: flex; align-items: center; gap: clamp(1rem, 3vw, 1.5rem); }
-.game-icon { width: clamp(64px, 12vw, 96px); height: auto; border-radius: var(--radius); }
+/* The hero is centred, like a title screen. Themes restyle these hooks:
+   .game-hero, .game-ambience, .game-icon-frame, .game-name, .game-subtitle,
+   .game-divider, .game-section-title. */
+.game-hero { position: relative; overflow: hidden; padding-block: clamp(2rem, 5vw, 3rem) clamp(2.5rem, 6vw, 4rem); }
+.game-hero-inner { position: relative; display: flex; flex-direction: column; align-items: center; gap: 0.9rem; text-align: center; }
+.game-hero-inner .back-link { align-self: flex-start; margin-bottom: 0.5rem; }
+.game-hero-inner .notice { text-align: left; margin-top: 0.75rem; }
+.game-icon-frame { margin-bottom: 0.75rem; }
+.game-icon { display: block; width: 128px; height: 128px; border-radius: var(--radius); }
+.game-name { font-size: clamp(2.8rem, 8vw, 5rem); }
+.game-subtitle { font-weight: 500; font-size: 1.15rem; }
+.game-edition { color: var(--muted); font-size: 0.92rem; margin-top: -0.4rem; }
+.game-ambience {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: -1; /* behind everything in <main>, above the page background */
+  overflow: hidden;
+  pointer-events: none;
+}
+.game-ambience img {
+  position: absolute;
+  top: var(--y);
+  left: var(--x);
+  width: var(--size);
+  height: var(--size);
+  opacity: 0.13;
+  transform: rotate(var(--tilt));
+  image-rendering: pixelated;
+  animation: icon-drop-in 1.1s cubic-bezier(0.3, 1.25, 0.5, 1) var(--delay) both;
+}
+/* Each icon drops from above the screen, overshoots a little and settles. */
+@keyframes icon-drop-in {
+  from { transform: translateY(-110vh) rotate(calc(var(--tilt) * -2)); opacity: 0; }
+  to { transform: translateY(0) rotate(var(--tilt)); opacity: 0.13; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .game-ambience img { animation: none; }
+}
+/* Page content stays above the falling icons. */
+body[data-theme] main, body[data-theme] .footer { position: relative; z-index: 1; }
+.game-divider { border-top: 1px solid var(--line); }
+.game-section-title { margin: clamp(2.5rem, 5vw, 3.5rem) 0 1.25rem; font-size: clamp(1.6rem, 3vw, 2rem); }
+.game-hero + .game-divider + * .game-section-title:first-child { margin-top: clamp(2rem, 4vw, 3rem); }
+.section .game-section-title { margin-top: 0; }
+.release-tag { font-size: 2.1rem; }
 .back-link { color: var(--muted); font-size: 0.9rem; text-decoration: none; }
 .back-link:hover { color: var(--text); }
-.subhead { margin: clamp(2.5rem, 5vw, 3.5rem) 0 1.25rem; font-size: clamp(1.6rem, 3vw, 2rem); }
-.section .subhead { margin-top: 0; }
 
 .version-list { display: flex; flex-direction: column; gap: 0.5rem; }
 .version { border: 1px solid var(--line); border-radius: var(--radius-small); background: var(--surface); }

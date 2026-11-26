@@ -1,10 +1,15 @@
 ---
 // One page per port: what it is, the latest release with a file for each
 // system, every older version, and the other ports.
+// A port with a `theme` in src/data/games.ts gets its own look from
+// src/styles/themes/<theme>.css, scoped to body[data-theme="<theme>"].
 import { Image } from "astro:assets";
 import Base from "../../layouts/Base.astro";
 import GitHubSnapshot from "../../components/GitHubSnapshot.astro";
 import { games, gameSlug, gamePath, type Game } from "../../data/games";
+
+// Every theme file is bundled with this page; each only applies to its port.
+import.meta.glob("../../styles/themes/*.css", { eager: true });
 
 export function getStaticPaths() {
   return games.map((game) => ({ params: { slug: gameSlug(game) }, props: { game } }));
@@ -15,16 +20,35 @@ interface Props {
 }
 const { game } = Astro.props;
 const others = games.filter((g) => g !== game);
+
+// The port's icon drops in once on load and settles behind the page;
+// shown only when the port's theme turns it on (.game-ambience { display: block; }).
+const falling = Array.from({ length: 14 }, (_, i) => ({
+  left_pct: (i * 37 + 5) % 100,
+  rest_pct: (i * 53 + 17) % 92,
+  delay_ms: (i * 97) % 900,
+  size_px: 28 + ((i * 11) % 30),
+  tilt_deg: ((i * 47) % 50) - 25,
+}));
 ---
-<Base title={game.name} description={`${game.summary} Download the latest release.`}>
-  <section class="page-head">
-    <div class="container">
+<Base title={game.name} description={`${game.summary} Download the latest release.`} theme={game.theme}>
+  <div class="game-ambience" aria-hidden="true">
+    {falling.map((f) => (
+      <Image
+        src={game.icon} alt="" widths={[64]} sizes="64px"
+        style={`--x:${f.left_pct}%;--y:${f.rest_pct}%;--delay:${f.delay_ms}ms;--size:${f.size_px}px;--tilt:${f.tilt_deg}deg`}
+      />
+    ))}
+  </div>
+  <section class="game-hero">
+    <div class="container game-hero-inner">
       <a class="back-link" href="/downloads/">← All ports</a>
-      <div class="game-title">
-        <Image class="game-icon" src={game.icon} alt="" widths={[96, 192]} sizes="96px" loading="eager" />
-        <h1>{game.name}</h1>
+      <div class="game-icon-frame">
+        <Image class="game-icon" src={game.icon} alt="" widths={[128, 256]} sizes="128px" loading="eager" />
       </div>
-      <p class="download-game">{game.game} <span>· {game.edition}</span></p>
+      <h1 class="game-name">{game.name}</h1>
+      <p class="game-subtitle">{game.game}</p>
+      <p class="game-edition">{game.edition}</p>
       <p class="lede">{game.summary}</p>
       <p class="notice">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 8v5" /><path d="M12 16.5v.5" /></svg>
@@ -32,15 +56,16 @@ const others = games.filter((g) => g !== game);
       </p>
     </div>
   </section>
+  <div class="game-divider" aria-hidden="true"></div>
 
   <GitHubSnapshot />
   <section class="section-tight">
     <div class="container" data-repo={game.repo}>
+      <h2 class="game-section-title">Latest release</h2>
       <article class="download">
         <header class="download-head">
           <div>
-            <p class="eyebrow">Latest release</p>
-            <h2 data-latest-tag>Checking GitHub…</h2>
+            <h3 class="release-tag" data-latest-tag>Checking GitHub…</h3>
           </div>
           <span class="pill" data-latest-meta></span>
         </header>
@@ -52,16 +77,17 @@ const others = games.filter((g) => g !== game);
         </p>
       </article>
 
-      <h2 class="subhead">Older versions</h2>
+      <h2 class="game-section-title">Older versions</h2>
       <div class="version-list" data-older>
         <p class="muted-text" data-older-empty>Older versions appear here once GitHub answers.</p>
       </div>
     </div>
   </section>
 
-  <section class="section">
+  <div class="game-divider" aria-hidden="true"></div>
+  <section class="section game-others">
     <div class="container">
-      <h2 class="subhead">Other ports</h2>
+      <h2 class="game-section-title">Other ports</h2>
       <ul class="other-ports">
         {others.map((g) => (
           <li>
