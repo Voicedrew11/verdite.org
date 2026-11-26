@@ -48,7 +48,7 @@ export const games: Game[] = [
     iconArt: "pixel",
     iconPixels: 64,
     game: "King’s Field JP",
-    edition: "Japan, PlayStation",
+    edition: "Japan, PlayStation, 1994",
     needs: "SLPS-00017",
     summary: "King’s Field JP, the first in the series, released only in Japan in 1994, as a native program.",
   },

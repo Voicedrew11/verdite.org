@@ -14,25 +14,25 @@ import { site } from "../data/site";
 import { games, gamePath } from "../data/games";
 
 const steps = [
-  { title: "Download a port", text: "Pick a game from the list below. Every port is free.", link: "Browse the ports", href: "#ports" },
-  { title: "Bring your own copy", text: "Each port needs your own disc image of the game. We never distribute game data.", link: "Which copy you need", href: "/guides/" },
-  { title: "Play", text: "Point the port at your disc image and play, with widescreen, smoother frame rates and modern controls.", link: "Read the wiki", href: site.wiki },
+  { title: "Download a port", text: "Pick a game from the list below.", link: "Browse the ports", href: "#ports" },
+  { title: "Bring your own copy", text: "Each port needs your own disc image of the game.", link: "Which copy you need", href: "/guides/" },
+  { title: "Play", text: "Point the port at your disc image and play.", link: "Read the wiki", href: site.wiki },
 ];
 
 const features = [
   { title: "Widescreen", text: "Play at your screen’s shape instead of a stretched 4:3 picture." },
   { title: "Higher frame rates", text: "Smoother movement than the original hardware could manage." },
   { title: "Mouse and keyboard", text: "Look and move the way you would in a modern first-person game." },
-  { title: "Mod support", text: "Load mods made by the community. A mod list is on its way." },
-  { title: "Every platform", text: "Windows, macOS, Linux, Android and iOS, from the same source." },
+  { title: "Mod support", text: "Load mods made by the community." },
+  { title: "Every platform", text: "Windows, macOS, Linux, Android, and iOS, from the same source." },
   { title: "Built from decompilations", text: "The original game code, rebuilt as native programs. No emulator." },
 ];
 
 const values = [
-  { title: "Faithful to the original", text: "The game as it was released, rebuilt from its own code with deep respect for it." },
+  { title: "Faithful to the original", text: "The game as it was released, rebuilt from its own code." },
   { title: "Free, with public source", text: "No paywalls and no accounts. Every line of every port is on GitHub." },
   { title: "Made by fans", text: "A small group of players working in the open, with the community’s input." },
-  { title: "Preserved", text: "Manuals, scans and development history collected in the archive." },
+  { title: "Preserved", text: "Manuals, scans, and development history collected in the archive." },
 ];
 ---
 <Base>
@@ -44,9 +44,8 @@ const values = [
         <p class="pill pill-accent">Native ports of classic games</p>
         <h1>Classic games on modern&nbsp;hardware</h1>
         <p class="lede">
-          We make native ports of older games for Windows, Mac, Linux and Android,
-          starting with FromSoftware’s King’s Field series. Each port is rebuilt from the
-          original release. The game itself isn’t included, so you need your own copy.
+          We make native ports of older games for Windows, Mac, Linux, Android, and iOS,
+          starting with FromSoftware’s King’s Field series.
         </p>
         <div class="actions">
           <a class="btn btn-primary" href="/downloads/">
@@ -73,7 +72,7 @@ const values = [
       <div class="community">
         <div>
           <h2>Join the community</h2>
-          <p>Get help, share mods, report bugs and follow the decompilation as it happens.</p>
+          <p>Get help, share mods, report bugs, and follow the decompilation as it happens.</p>
         </div>
         <div class="actions">
           <a class="btn btn-primary" href={site.discord}>Join the Discord</a>
@@ -81,7 +80,6 @@ const values = [
       </div>
       <div>
         <h2>Quick start</h2>
-        <p class="lede">Three steps from here to playing.</p>
         <ol class="steps">
           {steps.map((step, i) => (
             <li>
@@ -104,7 +102,6 @@ const values = [
     <div class="container">
       <header class="section-head section-head-center">
         <h2>What you get</h2>
-        <p class="lede">The games you remember, on the hardware you have.</p>
       </header>
       <ul class="feature-grid">
         {features.map((f) => (
@@ -135,21 +132,8 @@ const values = [
       </ul>
       <p class="notice notice-wide">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 8v5" /><path d="M12 16.5v.5" /></svg>
-        <span><strong>We do not distribute any game data.</strong> Verdite ports are fan-made. We don’t include, host or link to discs, ROMs or any copyrighted game files. To play, you need your own copy of the game.</span>
+        <span><strong>We do not distribute any game data.</strong> We don’t include, host, or link to discs, ROMs, or any copyrighted game files. To play, you need your own copy of the game.</span>
       </p>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container">
-      <div class="community community-center">
-        <p class="pill pill-accent">Free, with public source</p>
-        <h2>Built by fans, for fans</h2>
-        <p>Every line of code is on GitHub. Read it, fork it, learn from it. Verdite ports will never be behind a paywall.</p>
-        <div class="actions">
-          <a class="btn btn-ghost" href={site.github}><GitHubIcon />View the source on GitHub</a>
-        </div>
-      </div>
     </div>
   </section>
 </Base>

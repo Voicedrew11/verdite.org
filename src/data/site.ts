@@ -3,7 +3,7 @@
 export const site = {
   title: "Verdite",
   description:
-    "Native ports of classic games, starting with King’s Field, with downloads, mods, a wiki and an archive.",
+    "Native ports of classic games, starting with King’s Field, with downloads, mods, a wiki, and an archive.",
   github: "https://github.com/Voicedrew11",
   discord: "https://discord.gg/R4EKCs8RWH",
   wiki: "https://wiki.verdite.org",

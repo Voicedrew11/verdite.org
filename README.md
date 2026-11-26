@@ -46,4 +46,4 @@ Cloudflare dashboard (Workers & Pages → the verdite-org Worker → Settings �
   machines, and pages ship without a snapshot. The token is only used during
   the build and never reaches the pages.
 
-Remove the old `HUGO_VERSION` variable; it is no longer used.
+Delete the old `HUGO_VERSION` variable. Nothing uses it now.
