@@ -1,0 +1,10 @@
+---
+// Puts the build's GitHub snapshot into the page as JSON for
+// src/scripts/releases.ts to fall back on. Include once on any page that
+// shows release data.
+import { githubSnapshot } from "../data/github-snapshot";
+
+// "<" is escaped so nothing in the data can close the script element.
+const json = JSON.stringify(await githubSnapshot()).replace(/</g, "\\u003c");
+---
+<script is:inline type="application/json" id="github-snapshot" set:html={json} />

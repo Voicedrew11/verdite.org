@@ -22,9 +22,11 @@ The Verdite project website. Plain Astro, no theme, no UI framework.
 
 Port cards and port pages ask GitHub for releases, download counts and stars
 in the visitor's browser, so publishing a release updates the site with no
-rebuild. Unsigned visitors get 60 GitHub requests an hour; a page of cards uses
-five, cached for 10 minutes per tab. When GitHub refuses, the cards still link
-to each port's page and the page links to GitHub's release list.
+rebuild. GitHub allows each visitor's address 60 requests an hour; a page of
+cards uses five, and answers are kept in the browser for 10 minutes across tabs.
+When GitHub refuses, pages show the browser's older copy, or else a snapshot
+the build baked into the page (`src/data/github-snapshot.ts`), so numbers can
+be stale but never missing.
 
 ## Run locally
 
@@ -39,5 +41,9 @@ Cloudflare dashboard (Workers & Pages → the verdite-org Worker → Settings �
 
 - Build command: `npm run build`
 - Deploy command: `npx wrangler deploy`
+- Variable `GITHUB_TOKEN`: a GitHub token with no scopes (fine-grained,
+  public repositories, read-only). Without it GitHub often refuses shared build
+  machines, and pages ship without a snapshot. The token is only used during
+  the build and never reaches the pages.
 
 Remove the old `HUGO_VERSION` variable; it is no longer used.

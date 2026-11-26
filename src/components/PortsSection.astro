@@ -5,10 +5,12 @@
 // JavaScript or GitHub; the live numbers fill in when GitHub answers.
 import { Image } from "astro:assets";
 import DownloadIcon from "./DownloadIcon.astro";
+import GitHubSnapshot from "./GitHubSnapshot.astro";
 import { games, gamePath } from "../data/games";
 import { site } from "../data/site";
 ---
 <section class="section" id="ports">
+  <GitHubSnapshot />
   <div class="container">
     <header class="section-head section-head-center">
       <p class="pill pill-accent">Live from GitHub</p>

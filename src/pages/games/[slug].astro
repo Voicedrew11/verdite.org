@@ -3,6 +3,7 @@
 // system, every older version, and the other ports.
 import { Image } from "astro:assets";
 import Base from "../../layouts/Base.astro";
+import GitHubSnapshot from "../../components/GitHubSnapshot.astro";
 import { games, gameSlug, gamePath, type Game } from "../../data/games";
 
 export function getStaticPaths() {
@@ -32,6 +33,7 @@ const others = games.filter((g) => g !== game);
     </div>
   </section>
 
+  <GitHubSnapshot />
   <section class="section-tight">
     <div class="container" data-repo={game.repo}>
       <article class="download">
