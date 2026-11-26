@@ -1,0 +1,114 @@
+---
+import Base from "../layouts/Base.astro";
+import Intro from "../components/Intro.astro";
+import { site } from "../data/site";
+import { games, gameAnchor } from "../data/games";
+
+const features = [
+  { title: "Widescreen", text: "Play at your screen’s shape instead of a stretched 4:3 picture." },
+  { title: "Higher frame rates", text: "Smoother movement than the original hardware could manage." },
+  { title: "Mouse and keyboard", text: "Look and move the way you would in a modern first-person game." },
+  { title: "Mod support", text: "Load mods made by the community. A mod list is on its way." },
+  { title: "Every platform", text: "Windows, macOS, Linux, Android and iOS, from the same source." },
+  { title: "Built from decompilations", text: "The original PlayStation and PS2 code, rebuilt as native programs." },
+];
+---
+<Base>
+  <Intro slot="before-page" />
+
+  <section class="hero">
+    <div class="container hero-inner">
+      <div class="hero-text">
+        <p class="eyebrow">King’s Field · PlayStation &amp; PlayStation 2</p>
+        <h1>King’s Field, native on your&nbsp;computer.</h1>
+        <p class="lede">
+          Verdite is a set of native ports of FromSoftware’s King’s Field games, built
+          from decompilations of the original releases. Bring your own disc.
+        </p>
+        <div class="actions">
+          <a class="btn btn-primary" href="/downloads/">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11" /><path d="M7 10l5 5 5-5" /><path d="M5 20h14" /></svg>
+            Download
+          </a>
+          <a class="btn btn-ghost" href={site.wiki}>Read the wiki</a>
+        </div>
+        <p class="platforms">Windows · macOS · Linux · Android · iOS</p>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <canvas class="hero-gem"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <header class="section-head">
+        <p class="eyebrow">The ports</p>
+        <h2>Four games, one project.</h2>
+      </header>
+      <ul class="port-grid">
+        {games.map((game, i) => (
+          <li>
+            <a class="port-card" href={`/downloads/#${gameAnchor(game)}`} data-repo={game.repo}>
+              <span class="port-index">0{i + 1}</span>
+              <span class="port-name">{game.name}</span>
+              <span class="port-game">{game.game}</span>
+              <span class="port-edition">{game.edition}</span>
+              <span class="port-meta">
+                <code>{game.needs}</code>
+                <span class="port-version" data-version></span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <header class="section-head">
+        <p class="eyebrow">What you get</p>
+        <h2>The games you remember, on the hardware you have.</h2>
+      </header>
+      <ul class="feature-grid">
+        {features.map((f) => (
+          <li class="feature">
+            <h3>{f.title}</h3>
+            <p>{f.text}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="community">
+        <div>
+          <h2>Join the community</h2>
+          <p>Bug reports, mods and decompilation progress all happen on the Discord.</p>
+        </div>
+        <div class="actions">
+          <a class="btn btn-primary" href={site.discord}>Join the Discord</a>
+          <a class="btn btn-ghost" href={site.github}>Source on GitHub</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import { spinHeroGem } from "../scripts/hero";
+  import { latestRelease } from "../scripts/releases";
+
+  const canvas = document.querySelector<HTMLCanvasElement>(".hero-gem");
+  if (canvas) spinHeroGem(canvas);
+
+  for (const card of document.querySelectorAll<HTMLElement>(".port-card[data-repo]")) {
+    const label = card.querySelector("[data-version]");
+    latestRelease(card.dataset.repo ?? "")
+      .then((release) => { if (label) label.textContent = release.tag; })
+      .catch(() => { /* the card still links to the downloads page */ });
+  }
+</script>

@@ -1,0 +1,21 @@
+---
+// Layout for the plain Markdown pages in src/pages (mods, guides, archive).
+import Base from "./Base.astro";
+
+interface Props {
+  frontmatter: { title: string; description?: string };
+}
+const { frontmatter } = Astro.props;
+---
+<Base title={frontmatter.title} description={frontmatter.description}>
+  <section class="page-head">
+    <div class="container">
+      <h1>{frontmatter.title}</h1>
+    </div>
+  </section>
+  <section class="section section-tight">
+    <div class="container prose">
+      <slot />
+    </div>
+  </section>
+</Base>

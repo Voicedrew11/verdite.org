@@ -1,4 +1,4 @@
-# Hugo build output (built by Cloudflare, not committed)
-/public/
-/resources/_gen/
-.hugo_build.lock
+# Astro build output (built by Cloudflare, not committed)
+/dist/
+/.astro/
+node_modules/
