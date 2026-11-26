@@ -56,13 +56,22 @@ const year = new Date().getFullYear();
   <div class="container footer-inner">
     <div class="footer-brand">
       <Image src={logo} alt="Verdite Project" widths={[140, 280]} sizes="7rem" />
-      <p>Native ports of King’s Field. Not affiliated with FromSoftware.<br />Bring your own disc; this site will never host game data.</p>
+      <p>Native ports of classic games, rebuilt from the original code.<br />Not affiliated with FromSoftware or any publisher. Bring your own copy;<br />this site will never host game data.</p>
     </div>
-    <nav class="footer-links" aria-label="Elsewhere">
-      <a href={site.discord}>Discord</a>
-      <a href={site.github}>GitHub</a>
-      <a href={site.wiki}>Wiki</a>
-    </nav>
+    <div class="footer-columns">
+      <nav class="footer-links" aria-label="Quick links">
+        <h2>Quick links</h2>
+        <a href="/">Home</a>
+        <a href="/downloads/">Downloads</a>
+        {tabs.filter((tab) => tab.inNav && tab.href.startsWith("/")).map((tab) => <a href={tab.href}>{tab.name}</a>)}
+      </nav>
+      <nav class="footer-links" aria-label="Connect">
+        <h2>Connect</h2>
+        <a href={site.discord}>Discord</a>
+        <a href={site.github}>GitHub</a>
+        <a href={site.wiki}>Wiki</a>
+      </nav>
+    </div>
   </div>
   <p class="container footer-fine">© {year} Verdite Project</p>
 </footer>

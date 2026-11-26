@@ -1,0 +1,166 @@
+---
+// One page per port: what it is, the latest release with a file for each
+// system, every older version, and the other ports.
+import { Image } from "astro:assets";
+import Base from "../../layouts/Base.astro";
+import { games, gameSlug, gamePath, type Game } from "../../data/games";
+
+export function getStaticPaths() {
+  return games.map((game) => ({ params: { slug: gameSlug(game) }, props: { game } }));
+}
+
+interface Props {
+  game: Game;
+}
+const { game } = Astro.props;
+const others = games.filter((g) => g !== game);
+---
+<Base title={game.name} description={`${game.summary} Download the latest release.`}>
+  <section class="page-head">
+    <div class="container">
+      <a class="back-link" href="/downloads/">← All ports</a>
+      <div class="game-title">
+        <Image class="game-icon" src={game.icon} alt="" widths={[96, 192]} sizes="96px" loading="eager" />
+        <h1>{game.name}</h1>
+      </div>
+      <p class="download-game">{game.game} <span>· {game.edition}</span></p>
+      <p class="lede">{game.summary}</p>
+      <p class="notice">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 8v5" /><path d="M12 16.5v.5" /></svg>
+        <span><strong>You need your own copy.</strong> This port needs a disc image of <code>{game.needs}</code>. We don’t include or host game data.</span>
+      </p>
+    </div>
+  </section>
+
+  <section class="section-tight">
+    <div class="container" data-repo={game.repo}>
+      <article class="download">
+        <header class="download-head">
+          <div>
+            <p class="eyebrow">Latest release</p>
+            <h2 data-latest-tag>Checking GitHub…</h2>
+          </div>
+          <span class="pill" data-latest-meta></span>
+        </header>
+        <div class="download-primary" data-primary></div>
+        <ul class="file-list" data-files></ul>
+        <p class="download-links">
+          <a href={`https://github.com/${game.repo}/releases/latest`} data-latest-page>Release notes on GitHub</a>
+          <a href={`https://github.com/${game.repo}`}>Source</a>
+        </p>
+      </article>
+
+      <h2 class="subhead">Older versions</h2>
+      <div class="version-list" data-older>
+        <p class="muted-text" data-older-empty>Older versions appear here once GitHub answers.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="subhead">Other ports</h2>
+      <ul class="other-ports">
+        {others.map((g) => (
+          <li>
+            <a class="port-link port-card" href={gamePath(g)}>
+              <Image class="port-icon" src={g.icon} alt="" widths={[56, 112]} sizes="56px" />
+              <span class="port-name">{g.name}</span>
+              <span class="port-game">{g.game}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import {
+    releases, visitorOs, fileFor, formatDate, formatMegabytes, formatCount,
+    type Release, type ReleaseFile,
+  } from "../../scripts/releases";
+
+  const os = visitorOs();
+
+  function el<K extends keyof HTMLElementTagNameMap>(tag: K, className: string, text = ""): HTMLElementTagNameMap[K] {
+    const node = document.createElement(tag);
+    node.className = className;
+    node.textContent = text;
+    return node;
+  }
+
+  function fileLink(file: ReleaseFile, className: string): HTMLAnchorElement {
+    const a = el("a", className);
+    a.href = file.url;
+    a.append(el("span", "", file.kind.label), el("span", "file-size", formatMegabytes(file.bytes)));
+    return a;
+  }
+
+  function fileList(files: ReleaseFile[]): HTMLUListElement {
+    const list = el("ul", "file-list");
+    for (const file of files) {
+      const li = document.createElement("li");
+      li.append(fileLink(file, "file"));
+      list.append(li);
+    }
+    return list;
+  }
+
+  function renderLatest(root: HTMLElement, latest: Release): void {
+    root.querySelector("[data-latest-tag]")!.textContent = latest.tag;
+    root.querySelector("[data-latest-meta]")!.textContent =
+      `${formatDate(latest.published)} · ${formatCount(latest.downloads)} downloads`;
+    root.querySelector<HTMLAnchorElement>("[data-latest-page]")!.href = latest.page;
+
+    const primary = fileFor(latest, os);
+    if (primary) {
+      const link = fileLink(primary, "btn btn-primary btn-large");
+      link.prepend(el("span", "btn-kicker", "Recommended"));
+      root.querySelector("[data-primary]")!.append(link);
+    }
+    root.querySelector("[data-files]")!.replaceWith(fileList(latest.files.filter((f) => f !== primary)));
+  }
+
+  // Each older version is a closed row that opens to show its files.
+  function renderOlder(root: HTMLElement, older: Release[]): void {
+    const box = root.querySelector("[data-older]")!;
+    box.replaceChildren();
+    if (older.length === 0) {
+      box.append(el("p", "muted-text", "No older versions yet."));
+      return;
+    }
+    for (const release of older) {
+      const row = el("details", "version");
+      const summary = el("summary", "version-summary");
+      summary.append(
+        el("span", "version-tag", release.tag),
+        el("span", "version-date", formatDate(release.published)),
+        el("span", "version-downloads", `${formatCount(release.downloads)} downloads`),
+      );
+      const notes = el("a", "version-notes", "Release notes on GitHub");
+      notes.href = release.page;
+      row.append(summary, fileList(release.files), notes);
+      box.append(row);
+    }
+  }
+
+  const root = document.querySelector<HTMLElement>("[data-repo]");
+  if (root) {
+    releases(root.dataset.repo ?? "")
+      .then((list) => {
+        const [latest, ...older] = list;
+        if (!latest) {
+          root.querySelector("[data-latest-tag]")!.textContent = "No release yet";
+          renderOlder(root, []);
+          return;
+        }
+        renderLatest(root, latest);
+        renderOlder(root, older);
+      })
+      .catch(() => {
+        root.querySelector("[data-latest-tag]")!.textContent = "Couldn’t reach GitHub";
+        root.querySelector("[data-older-empty]")!.textContent = "Use the release notes link above to see every version.";
+      });
+  }
+</script>

@@ -1,95 +1,49 @@
 ---
+// Downloads: what the ports are, which copy you need, then the live port
+// cards. Each card leads to the port's own page with every file and version.
 import Base from "../layouts/Base.astro";
-import { games, gameAnchor } from "../data/games";
+import PortsSection from "../components/PortsSection.astro";
+import { site } from "../data/site";
 ---
 <Base title="Downloads" description="Download the latest release of each Verdite port for Windows, macOS, Linux, Android and iOS.">
   <section class="page-head">
     <div class="container">
-      <p class="eyebrow">Downloads</p>
-      <h1>Get the ports.</h1>
-      <p class="lede">The latest release of each game. The file for your system comes first.</p>
-      <p class="notice">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 8v5" /><path d="M12 16.5v.5" /></svg>
-        <span><strong>You need your own copy of each game.</strong> Verdite does not include game data, and this site will never host discs or ROMs.</span>
+      <p class="eyebrow">Get started</p>
+      <h1>Downloads</h1>
+      <p class="lede">Native ports of classic games. Free, and rebuilt to run on the hardware you have.</p>
+      <p class="muted-text">
+        Each port is rebuilt from the original game’s code, adding widescreen, smoother frame rates
+        and modern controls while keeping the game you remember.
       </p>
     </div>
   </section>
 
-  <section class="section section-tight">
-    <div class="container download-list">
-      {games.map((game) => (
-        <article class="download" id={gameAnchor(game)} data-repo={game.repo}>
-          <header class="download-head">
-            <div>
-              <h2>{game.name}</h2>
-              <p class="download-game">{game.game} <span>· {game.edition}</span></p>
-            </div>
-            <span class="pill" data-release>Checking GitHub…</span>
-          </header>
-          <p class="download-needs">Needs your own disc image of <code>{game.needs}</code>.</p>
-          <div class="download-primary" data-primary></div>
-          <ul class="file-list" data-files></ul>
-          <p class="download-links">
-            <a href={`https://github.com/${game.repo}/releases/latest`}>Release notes on GitHub</a>
-            <a href={`https://github.com/${game.repo}`}>Source</a>
-          </p>
-        </article>
-      ))}
+  <section class="section-tight">
+    <div class="container">
+      <div class="callout">
+        <div>
+          <h3>Which copy do you need?</h3>
+          <p>Each port needs your own disc image of one specific release, named on its card. We never host game data.</p>
+        </div>
+        <a class="btn btn-ghost" href="/guides/">Read the guides</a>
+      </div>
+    </div>
+  </section>
+
+  <PortsSection />
+
+  <section class="section-tight">
+    <div class="container">
+      <div class="callout">
+        <div>
+          <h3>Need help?</h3>
+          <p>The wiki covers setup and troubleshooting, and the Discord is there for anything else.</p>
+        </div>
+        <div class="actions">
+          <a class="btn btn-ghost" href={site.wiki}>Visit the wiki</a>
+          <a class="btn btn-ghost" href={site.discord}>Ask on Discord</a>
+        </div>
+      </div>
     </div>
   </section>
 </Base>
-
-<script>
-  import {
-    latestRelease, visitorOs, formatDate, formatMegabytes, type Release, type ReleaseFile,
-  } from "../scripts/releases";
-
-  const os = visitorOs();
-
-  function fileLink(file: ReleaseFile, className: string): HTMLAnchorElement {
-    const a = document.createElement("a");
-    a.className = className;
-    a.href = file.url;
-    const label = document.createElement("span");
-    label.textContent = file.kind.label;
-    const size = document.createElement("span");
-    size.className = "file-size";
-    size.textContent = formatMegabytes(file.bytes);
-    a.append(label, size);
-    return a;
-  }
-
-  function render(card: HTMLElement, release: Release): void {
-    const pill = card.querySelector("[data-release]");
-    if (pill) pill.textContent = `${release.tag} · ${formatDate(release.published)}`;
-
-    // The first file for the visitor's system becomes the big button.
-    const primary = os ? release.files.find((f) => f.kind.os === os) : undefined;
-    const slot = card.querySelector("[data-primary]");
-    if (primary && slot) {
-      const link = fileLink(primary, "btn btn-primary btn-large");
-      link.prepend(Object.assign(document.createElement("span"), {
-        className: "btn-kicker",
-        textContent: "Recommended",
-      }));
-      slot.append(link);
-    }
-
-    const list = card.querySelector("[data-files]");
-    for (const file of release.files) {
-      if (file === primary) continue;
-      const li = document.createElement("li");
-      li.append(fileLink(file, "file"));
-      list?.append(li);
-    }
-  }
-
-  for (const card of document.querySelectorAll<HTMLElement>(".download[data-repo]")) {
-    latestRelease(card.dataset.repo ?? "")
-      .then((release) => render(card, release))
-      .catch(() => {
-        const pill = card.querySelector("[data-release]");
-        if (pill) pill.textContent = "Couldn’t reach GitHub; use the link below";
-      });
-  }
-</script>

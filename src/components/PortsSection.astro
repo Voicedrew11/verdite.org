@@ -1,0 +1,101 @@
+---
+// "Our ports": live totals from GitHub, then one card per port with its
+// stars, downloads, latest version and a button for the visitor's system.
+// Used on the home and downloads pages. Cards render complete without
+// JavaScript or GitHub; the live numbers fill in when GitHub answers.
+import { Image } from "astro:assets";
+import DownloadIcon from "./DownloadIcon.astro";
+import { games, gamePath } from "../data/games";
+import { site } from "../data/site";
+---
+<section class="section" id="ports">
+  <div class="container">
+    <header class="section-head section-head-center">
+      <p class="pill pill-accent">Live from GitHub</p>
+      <h2>Our ports</h2>
+      <p class="lede">Numbers come straight from GitHub. The source for every port is public.</p>
+    </header>
+
+    <dl class="stat-row">
+      <div class="stat"><dt>GitHub stars</dt><dd data-total="stars">–</dd></div>
+      <div class="stat"><dt>Total downloads</dt><dd data-total="downloads">–</dd></div>
+      <div class="stat"><dt>Ports</dt><dd>{games.length}</dd></div>
+    </dl>
+
+    <ul class="port-grid">
+      {games.map((game) => (
+        <li class="port-card" data-repo={game.repo}>
+          <a class="port-link" href={gamePath(game)}>
+            <Image class="port-icon" src={game.icon} alt="" widths={[56, 112]} sizes="56px" />
+            <span class="port-name">{game.name}</span>
+            <span class="port-game">{game.game}</span>
+            <span class="port-edition">{game.edition}</span>
+            <span class="port-needs">Needs <code>{game.needs}</code></span>
+          </a>
+          <dl class="port-stats">
+            <div><dt>Stars</dt><dd data-stat="stars">–</dd></div>
+            <div><dt>Downloads</dt><dd data-stat="downloads">–</dd></div>
+            <div><dt>Latest</dt><dd data-stat="version">–</dd></div>
+          </dl>
+          <div class="port-actions">
+            <a class="btn btn-primary btn-small" href={gamePath(game)} data-get>
+              <DownloadIcon size={16} />
+              <span data-get-label>Get it</span>
+            </a>
+            <a class="btn btn-ghost btn-small" href={`https://github.com/${game.repo}`}>Source</a>
+          </div>
+        </li>
+      ))}
+    </ul>
+
+    <p class="center-row">
+      <a class="btn btn-ghost" href={site.github}>View all on GitHub</a>
+    </p>
+  </div>
+</section>
+
+<script>
+  import {
+    releases, stars, fileFor, totalDownloads, visitorOs, formatCount,
+  } from "../scripts/releases";
+
+  const os = visitorOs();
+  const totals = { stars: 0, downloads: 0 };
+
+  function setText(root: ParentNode, selector: string, text: string): void {
+    const el = root.querySelector(selector);
+    if (el) el.textContent = text;
+  }
+
+  function addToTotal(key: "stars" | "downloads", n: number): void {
+    totals[key] += n;
+    setText(document, `[data-total="${key}"]`, formatCount(totals[key]));
+  }
+
+  for (const card of document.querySelectorAll<HTMLElement>(".port-card[data-repo]")) {
+    const repo = card.dataset.repo ?? "";
+
+    stars(repo)
+      .then((n) => { setText(card, '[data-stat="stars"]', formatCount(n)); addToTotal("stars", n); })
+      .catch(() => { /* the dash stays */ });
+
+    releases(repo)
+      .then((list) => {
+        const downloads = totalDownloads(list);
+        setText(card, '[data-stat="downloads"]', formatCount(downloads));
+        addToTotal("downloads", downloads);
+        const latest = list[0];
+        if (!latest) return;
+        setText(card, '[data-stat="version"]', latest.tag);
+        // With a file for this system the button downloads it directly;
+        // otherwise it stays a link to the port's page.
+        const file = fileFor(latest, os);
+        const button = card.querySelector<HTMLAnchorElement>("[data-get]");
+        if (file && button) {
+          button.href = file.url;
+          setText(button, "[data-get-label]", `Get ${latest.tag}`);
+        }
+      })
+      .catch(() => { /* the card still links to the port's page */ });
+  }
+</script>
