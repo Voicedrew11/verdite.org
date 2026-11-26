@@ -4,6 +4,7 @@
 // A port with a `theme` in src/data/games.ts gets its own look from
 // src/styles/themes/<theme>.css, scoped to body[data-theme="<theme>"].
 import PortIcon from "../../components/PortIcon.astro";
+import IconScatter from "../../components/IconScatter.astro";
 import Base from "../../layouts/Base.astro";
 import GitHubSnapshot from "../../components/GitHubSnapshot.astro";
 import { games, gameSlug, gamePath, type Game } from "../../data/games";
@@ -21,51 +22,10 @@ interface Props {
 const { game } = Astro.props;
 const others = games.filter((g) => g !== game);
 
-// The port's icon drops in once on load and settles behind the page;
-// shown only when the port's theme turns it on (.game-ambience { display: block; }).
-// Positions come from a generator seeded by the port's name, so each port
-// has its own layout and it stays the same on every visit.
-function seededRandom(seed: string): () => number {
-  let h = 2166136261;
-  for (const ch of seed) h = Math.imul(h ^ ch.charCodeAt(0), 16777619);
-  return () => {
-    h = Math.imul(h ^ (h >>> 15), 2246822507);
-    h = Math.imul(h ^ (h >>> 13), 3266489909);
-    h ^= h >>> 16;
-    return (h >>> 0) / 4294967296;
-  };
-}
-const random = seededRandom(game.name);
-
-// One icon per cell of a 4 x 4 grid over the screen, nudged randomly within
-// its cell, so they cover the screen evenly without looking lined up.
-const GRID = 4;
-// Icons tilt a little; a backdrop object is turned any way and mirrored.
-const TILT_MAX_DEG = game.backdrop ? 180 : 25;
-const SIZE_MIN_PX = game.backdrop ? 44 : 28;
-const CELL_PCT = 100 / GRID;
-const falling = Array.from({ length: GRID * GRID }, (_, i) => {
-  const col = i % GRID;
-  const row = Math.floor(i / GRID);
-  const jitter = () => (random() - 0.5) * CELL_PCT * 0.6;
-  return {
-    left_pct: Math.round(col * CELL_PCT + CELL_PCT / 2 + jitter() - 2),
-    rest_pct: Math.round(row * CELL_PCT + CELL_PCT / 2 + jitter() - 3),
-    delay_ms: Math.round(random() * 900),
-    size_px: SIZE_MIN_PX + Math.round(random() * 30),
-    tilt_deg: Math.round((random() * 2 - 1) * TILT_MAX_DEG),
-    mirror: game.backdrop && random() < 0.5 ? -1 : 1,
-  };
-});
 ---
 <Base title={game.name} description={`${game.summary} Download the latest release.`} theme={game.theme}>
-  <div class="game-ambience" aria-hidden="true">
-    {falling.map((f) => (
-      game.backdrop
-        ? <img src={game.backdrop.src} alt="" decoding="async" style={`--x:${f.left_pct}%;--y:${f.rest_pct}%;--delay:${f.delay_ms}ms;--size:${f.size_px}px;--tilt:${f.tilt_deg}deg;--mirror:${f.mirror}`} />
-        : <PortIcon game={game} size_px={f.size_px} style={`--x:${f.left_pct}%;--y:${f.rest_pct}%;--delay:${f.delay_ms}ms;--size:${f.size_px}px;--tilt:${f.tilt_deg}deg`} />
-    ))}
-  </div>
+  <!-- Shown only when the port's theme turns it on (.game-ambience { display: block; }). -->
+  <IconScatter ports={[game]} seed={game.name} class="game-ambience" />
   <section class="game-hero">
     <div class="container game-hero-inner">
       <a class="back-link" href="/downloads/">← All ports</a>

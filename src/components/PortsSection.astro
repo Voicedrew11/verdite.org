@@ -4,6 +4,7 @@
 // Used on the home and downloads pages. Cards render complete without
 // JavaScript or GitHub; the live numbers fill in when GitHub answers.
 import DownloadIcon from "./DownloadIcon.astro";
+import GitHubIcon from "./GitHubIcon.astro";
 import PortIcon from "./PortIcon.astro";
 import GitHubSnapshot from "./GitHubSnapshot.astro";
 import { games, gamePath } from "../data/games";
@@ -44,14 +45,14 @@ import { site } from "../data/site";
               <DownloadIcon size={16} />
               <span data-get-label>Get it</span>
             </a>
-            <a class="btn btn-ghost btn-small" href={`https://github.com/${game.repo}`}>Source</a>
+            <a class="btn btn-ghost btn-small" href={`https://github.com/${game.repo}`}><GitHubIcon size={16} />Source</a>
           </div>
         </li>
       ))}
     </ul>
 
     <p class="center-row">
-      <a class="btn btn-ghost" href={site.github}>View all on GitHub</a>
+      <a class="btn btn-ghost" href={site.github}><GitHubIcon />View all on GitHub</a>
     </p>
   </div>
 </section>

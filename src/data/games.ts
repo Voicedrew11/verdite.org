@@ -11,6 +11,13 @@ import verdite3Icon from "../assets/ports/verdite3.png";
 import holylandIcon from "../assets/ports/holyland.png";
 import holylandIdol from "../assets/ports/holyland-idol.png";
 
+/** A cut-out picture, turned and mirrored freely, rim-lit with `glow` (a CSS
+    colour) so dark objects still read on a dark page. */
+export interface Backdrop {
+  image: ImageMetadata;
+  glow: string;
+}
+
 export interface Game {
   name: string;
   repo: string;
@@ -23,9 +30,9 @@ export interface Game {
   iconArt: "pixel" | "painted";
   /** The art's own resolution (a 64-pixel sprite scaled up to 256 is 64). */
   iconPixels: number;
-  /** Scattered behind a themed port's page in place of the icon, turned and
-      mirrored freely; for icons that carry their own background. */
-  backdrop?: ImageMetadata;
+  /** Scattered in backgrounds in place of the icon, for icons that carry
+      their own background. */
+  backdrop?: Backdrop;
   /** Names src/styles/themes/<theme>.css, which restyles the port's own page. */
   theme?: string;
   /** One or two sentences for the port's own page. */
@@ -40,10 +47,10 @@ export const games: Game[] = [
     icon: verdite1Icon,
     iconArt: "pixel",
     iconPixels: 64,
-    game: "King’s Field",
+    game: "King’s Field JP",
     edition: "Japan, PlayStation",
     needs: "SLPS-00017",
-    summary: "The first King’s Field, released only in Japan in 1994, as a native program.",
+    summary: "King’s Field JP, the first in the series, released only in Japan in 1994, as a native program.",
   },
   {
     name: "Verdite2",
@@ -76,7 +83,7 @@ export const games: Game[] = [
     iconArt: "painted",
     iconPixels: 256,
     // The Idol of Sorrow, cut out of the icon's glowing background.
-    backdrop: holylandIdol,
+    backdrop: { image: holylandIdol, glow: "rgba(233, 148, 74, 0.65)" },
     theme: "holyland",
     game: "King’s Field: The Ancient City",
     edition: "North America, PlayStation 2",

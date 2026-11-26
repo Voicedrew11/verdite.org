@@ -8,6 +8,7 @@ import PortIcon from "../components/PortIcon.astro";
 import Intro from "../components/Intro.astro";
 import PlatformIcons from "../components/PlatformIcons.astro";
 import DownloadIcon from "../components/DownloadIcon.astro";
+import GitHubIcon from "../components/GitHubIcon.astro";
 import PortsSection from "../components/PortsSection.astro";
 import { site } from "../data/site";
 import { games, gamePath } from "../data/games";
@@ -52,7 +53,7 @@ const values = [
             <DownloadIcon />
             Download now
           </a>
-          <a class="btn btn-ghost" href={site.github}>GitHub</a>
+          <a class="btn btn-ghost" href={site.github}><GitHubIcon />GitHub</a>
         </div>
         <ul class="chip-row" aria-label="The ports">
           {games.map((game) => (
@@ -146,7 +147,7 @@ const values = [
         <h2>Built by fans, for fans</h2>
         <p>Every line of code is on GitHub. Read it, fork it, learn from it. Verdite ports will never be behind a paywall.</p>
         <div class="actions">
-          <a class="btn btn-ghost" href={site.github}>View the source on GitHub</a>
+          <a class="btn btn-ghost" href={site.github}><GitHubIcon />View the source on GitHub</a>
         </div>
       </div>
     </div>

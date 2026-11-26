@@ -598,10 +598,9 @@ code {
   position: fixed;
   inset: 0;
   z-index: -1; /* behind everything in <main>, above the page background */
-  overflow: hidden;
-  pointer-events: none;
 }
-.game-ambience img {
+.icon-scatter { overflow: hidden; pointer-events: none; }
+.icon-scatter img {
   position: absolute;
   top: var(--y);
   left: var(--x);
@@ -612,13 +611,18 @@ code {
   transform: rotate(var(--tilt)) scaleX(var(--mirror, 1));
   animation: icon-drop-in 1.1s cubic-bezier(0.3, 1.25, 0.5, 1) var(--delay) both;
 }
+/* Dark cut-out objects get a rim light and a little more presence. */
+.icon-scatter .scatter-backdrop {
+  --rest-opacity: 0.3;
+  filter: brightness(1.5) drop-shadow(0 0 5px var(--glow));
+}
 /* Each icon drops from above the screen, overshoots a little and settles. */
 @keyframes icon-drop-in {
   from { transform: translateY(-110vh) rotate(calc(var(--tilt) * -2)) scaleX(var(--mirror, 1)); opacity: 0; }
   to { transform: translateY(0) rotate(var(--tilt)) scaleX(var(--mirror, 1)); opacity: var(--rest-opacity, 0.13); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .game-ambience img { animation: none; }
+  .icon-scatter img { animation: none; }
 }
 /* Page content stays above the falling icons. */
 body[data-theme] main, body[data-theme] .footer { position: relative; z-index: 1; }

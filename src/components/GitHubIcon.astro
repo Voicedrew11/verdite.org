@@ -1,0 +1,11 @@
+---
+// GitHub's mark, for buttons that link to GitHub. From Simple Icons (CC0),
+// drawn at build time.
+import { siGithub } from "simple-icons";
+
+interface Props {
+  size?: number;
+}
+const { size = 18 } = Astro.props;
+---
+<svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d={siGithub.path} /></svg>
